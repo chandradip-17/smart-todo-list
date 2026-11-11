@@ -68,12 +68,9 @@ Try the application here:
 
 ## 📸 Screenshots
 
-_Add screenshots of your application here._
+### Light Mode
 
-You can upload screenshots to a `screenshots` folder in your repository and display them like this:
-
-```markdown
-![Smart To-Do List Screenshot](screenshots/homepage.png)
+![Smart To-Do List 2.0 - Homepage](screenshots/homepage.png)
 ```
 
 ## 🔮 Future Improvements
