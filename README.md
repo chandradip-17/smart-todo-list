@@ -71,6 +71,10 @@ Try the application here:
 ### Light Mode
 
 ![Smart To-Do List 2.0 - Homepage](screenshots/homepage.png)
+
+### Dark Mode
+
+![Smart To-Do List 2.0 - Dark Mode](screenshots/dark-mode.png)
 ```
 
 ## 🔮 Future Improvements
