@@ -4,62 +4,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart To-Do List</title>
+    <title>Smart To-Do List 2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
-        <header>
+<div class="container">
+
+    <header>
+        <div>
             <h1>My Tasks ✨</h1>
-            <p>Organize your day, one task at a time.</p>
-        </header>
+            <p>Make today productive.</p>
+        </div>
 
-        <section class="stats">
-            <div class="stat-card">
-                <h2 id="totalTasks">0</h2>
-                <p>Total Tasks</p>
-            </div>
-            <div class="stat-card">
-                <h2 id="completedTasks">0</h2>
-                <p>Completed</p>
-            </div>
-            <div class="stat-card">
-                <h2 id="pendingTasks">0</h2>
-                <p>Pending</p>
-            </div>
-        </section>
+        <button id="themeToggle" type="button">🌙 Dark Mode</button>
+    </header>
 
-        <form id="taskForm">
-            <input
-                type="text"
-                id="taskInput"
-                placeholder="What do you need to do?"
-                required
-            >
+    <section class="stats">
+        <div class="stat-card">
+            <h2 id="totalTasks">0</h2>
+            <p>Total Tasks</p>
+        </div>
 
-            <select id="priority">
-                <option value="Low">Low Priority</option>
-                <option value="Medium" selected>Medium Priority</option>
-                <option value="High">High Priority</option>
-            </select>
+        <div class="stat-card">
+            <h2 id="completedTasks">0</h2>
+            <p>Completed</p>
+        </div>
 
-            <button type="submit">+ Add Task</button>
-        </form>
+        <div class="stat-card">
+            <h2 id="pendingTasks">0</h2>
+            <p>Pending</p>
+        </div>
+    </section>
 
+    <form id="taskForm">
+
+        <input
+            type="text"
+            id="taskInput"
+            placeholder="What do you need to do?"
+            required
+        >
+
+        <select id="priority">
+            <option value="Low">Low Priority</option>
+            <option value="Medium" selected>Medium Priority</option>
+            <option value="High">High Priority</option>
+        </select>
+
+        <input
+            type="datetime-local"
+            id="dueDate"
+            aria-label="Task deadline"
+        >
+
+        <button type="submit">+ Add Task</button>
+
+    </form>
+
+    <div class="toolbar">
         <nav class="filters">
             <button class="filter active" data-filter="all">All</button>
             <button class="filter" data-filter="pending">Pending</button>
             <button class="filter" data-filter="completed">Completed</button>
         </nav>
 
-        <ul id="taskList"></ul>
-
-        <footer>
-            <p>Made with ❤️ using HTML, CSS & JavaScript</p>
-        </footer>
+        <button id="reminderToggle" class="reminder-btn" type="button">
+            🔔 Enable Reminders
+        </button>
     </div>
 
-    <script src="script.js"></script>
+    <ul id="taskList"></ul>
+
+    <footer>
+        <p>Smart To-Do List 2.0 | Built with ❤️</p>
+    </footer>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
