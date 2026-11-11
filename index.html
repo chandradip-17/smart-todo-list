@@ -61,9 +61,15 @@
         <button type="submit">+ Add Task</button>
 
     </form>
-    <div id="editModal" class="modal hidden">
+    <div
+    id="editModal"
+    class="modal hidden"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="editModalTitle"
+>
     <div class="modal-content">
-        <h2>Edit Task</h2>
+        <h2 id="editModalTitle">Edit Task</h2>
 
         <form id="editForm">
             <label for="editTitle">Task</label>
