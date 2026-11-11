@@ -61,6 +61,31 @@
         <button type="submit">+ Add Task</button>
 
     </form>
+    <div id="editModal" class="modal hidden">
+    <div class="modal-content">
+        <h2>Edit Task</h2>
+
+        <form id="editForm">
+            <label for="editTitle">Task</label>
+            <input type="text" id="editTitle" required>
+
+            <label for="editPriority">Priority</label>
+            <select id="editPriority">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+
+            <label for="editDueDate">Due Date</label>
+            <input type="datetime-local" id="editDueDate">
+
+            <div class="modal-actions">
+                <button type="submit">Save Changes</button>
+                <button type="button" id="cancelEdit">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 
     <div class="toolbar">
         <nav class="filters">

@@ -5,7 +5,33 @@ const priorityInput = document.getElementById("priority");
 const dueDateInput = document.getElementById("dueDate");
 const taskList = document.getElementById("taskList");
 
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+// Safely load tasks from Local Storage
+function loadTasks() {
+    try {
+        const savedTasks = localStorage.getItem("tasks");
+
+        if (!savedTasks) {
+            return [];
+        }
+
+        const parsedTasks = JSON.parse(savedTasks);
+
+        if (!Array.isArray(parsedTasks)) {
+            return [];
+        }
+
+        return parsedTasks.filter(task =>
+    task &&
+    typeof task === "object" &&
+    typeof task.text === "string"
+);
+    } catch (error) {
+        console.error("Error loading tasks:", error);
+        return [];
+    }
+}
+
+let tasks = loadTasks();
 let currentFilter = "all";
 let draggedId = null;
 let reminderTimers = new Map();
@@ -186,43 +212,47 @@ function renderTasks() {
         edit.textContent = "Edit";
 
         edit.addEventListener("click", () => {
-            const updated = prompt("Edit task:", task.text);
+    const editModal = document.getElementById("editModal");
+    const editForm = document.getElementById("editForm");
+    const editTitle = document.getElementById("editTitle");
+    const editPriority = document.getElementById("editPriority");
+    const editDueDate = document.getElementById("editDueDate");
 
-            if (updated === null || !updated.trim()) return;
+    editTitle.value = task.text;
+    editPriority.value = task.priority || "Medium";
+    editDueDate.value = task.dueDate || "";
 
-            task.text = updated.trim();
+    editModal.classList.remove("hidden");
+    editTitle.focus();
 
-            const newPriority = prompt(
-                "Priority: Low, Medium or High",
-                task.priority
-            );
+    editForm.onsubmit = (event) => {
+        event.preventDefault();
 
-            if (newPriority !== null) {
-                const valid = ["Low", "Medium", "High"];
-                const value = valid.find(
-                    p => p.toLowerCase() === newPriority.trim().toLowerCase()
-                );
+        const updatedTitle = editTitle.value.trim();
 
-                if (value) task.priority = value;
-            }
+        if (!updatedTitle) return;
 
-            const newDue = prompt(
-                "Due date (YYYY-MM-DDTHH:mm), or leave empty:",
-                task.dueDate
-            );
+        task.text = updatedTitle;
+        task.priority = editPriority.value;
+        task.dueDate = editDueDate.value;
+        task.reminded = false;
 
-            if (newDue !== null) {
-                const parsed = newDue ? new Date(newDue) : null;
+        saveTasks();
+        renderTasks();
 
-                if (!newDue || !isNaN(parsed.getTime())) {
-                    task.dueDate = newDue;
-                    task.reminded = false;
-                }
-            }
+                editModal.classList.add("hidden");
+    };
 
-            saveTasks();
-            renderTasks();
-        });
+    document.getElementById("cancelEdit").onclick = () => {
+    editModal.classList.add("hidden");
+};
+
+editModal.onclick = (event) => {
+    if (event.target === editModal) {
+        editModal.classList.add("hidden");
+    }
+};
+});
 
         const remove = document.createElement("button");
         remove.className = "delete-btn";
