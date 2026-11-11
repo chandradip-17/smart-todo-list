@@ -1,3 +1,21 @@
+# Smart To-Do List 2.0
+
+<p align="center">
+  A modern, responsive task management application built with HTML, CSS, and JavaScript.
+</p>
+
+<p align="center">
+  <a href="https://chandradip-17.github.io/smart-todo-list/">
+    <strong>🚀 Live Demo</strong>
+  </a>
+</p>
+
+<p align="center">
+  ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+  ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
+  ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+  ![GitHub Pages](https://img.shields.io/badge/Deployed-GitHub%20Pages-222222?style=for-the-badge&logo=githubpages&logoColor=white)
+</p>
 # Smart To-Do List 2.0 🚀
 
 A modern, responsive task management web application built using **HTML, CSS, and Vanilla JavaScript**. Organize your daily activities, manage priorities, set deadlines, and stay productive with a clean and intuitive interface.
