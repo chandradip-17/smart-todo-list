@@ -1,4 +1,8 @@
 
+/* ================================
+   ELEMENT REFERENCES
+================================ */
+
 const taskForm = document.getElementById("taskForm");
 const taskInput = document.getElementById("taskInput");
 const priorityInput = document.getElementById("priority");
@@ -15,7 +19,10 @@ const cancelEdit = document.getElementById("cancelEdit");
 
 let activeTaskId = null;
 
-// Safely load tasks from Local Storage
+/* ================================
+   LOAD TASKS SAFELY
+================================ */
+
 function loadTasks() {
     try {
         const savedTasks = localStorage.getItem("tasks");
@@ -35,6 +42,7 @@ function loadTasks() {
             typeof task === "object" &&
             typeof task.text === "string"
         );
+
     } catch (error) {
         console.error("Error loading tasks:", error);
         return [];
@@ -42,23 +50,34 @@ function loadTasks() {
 }
 
 let tasks = loadTasks();
+
 let currentFilter = "all";
 let draggedId = null;
 let reminderTimers = new Map();
 
 const MAX_TIMEOUT = 2147483647;
 
-// Save tasks
+/* ================================
+   SAVE TASKS
+================================ */
+
 function saveTasks() {
     localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
-// Dark mode
+/* ================================
+   DARK MODE
+================================ */
+
 const themeToggle = document.getElementById("themeToggle");
 
 function applyTheme(dark) {
     document.body.classList.toggle("dark", dark);
-    themeToggle.textContent = dark ? "☀️ Light Mode" : "🌙 Dark Mode";
+
+    themeToggle.textContent = dark
+        ? "☀️ Light Mode"
+        : "🌙 Dark Mode";
+
     localStorage.setItem("darkMode", dark);
 }
 
@@ -68,17 +87,29 @@ themeToggle.addEventListener("click", () => {
     applyTheme(!document.body.classList.contains("dark"));
 });
 
-// Statistics
-function updateStats() {
-    const completed = tasks.filter(task => task.completed).length;
+/* ================================
+   TASK STATISTICS
+================================ */
 
-    document.getElementById("totalTasks").textContent = tasks.length;
-    document.getElementById("completedTasks").textContent = completed;
+function updateStats() {
+    const completed = tasks.filter(
+        task => task.completed
+    ).length;
+
+    document.getElementById("totalTasks").textContent =
+        tasks.length;
+
+    document.getElementById("completedTasks").textContent =
+        completed;
+
     document.getElementById("pendingTasks").textContent =
         tasks.length - completed;
 }
 
-// Notifications
+/* ================================
+   BROWSER NOTIFICATIONS
+================================ */
+
 function enableReminders() {
     if (!("Notification" in window)) {
         alert("Your browser does not support notifications.");
@@ -91,9 +122,13 @@ function enableReminders() {
                 "🔔 Reminders Enabled";
 
             scheduleReminders();
+
             alert("Reminders enabled successfully!");
+
         } else {
-            alert("Please allow notifications in your browser settings.");
+            alert(
+                "Please allow notifications in your browser settings."
+            );
         }
     });
 }
@@ -105,8 +140,10 @@ function scheduleReminders() {
     reminderTimers.forEach(timer => clearTimeout(timer));
     reminderTimers.clear();
 
-    if (!("Notification" in window) ||
-        Notification.permission !== "granted") {
+    if (
+        !("Notification" in window) ||
+        Notification.permission !== "granted"
+    ) {
         return;
     }
 
@@ -153,11 +190,16 @@ function scheduleReminders() {
             });
 
             renderTasks();
+
         }, delay);
 
         reminderTimers.set(task.id, timer);
     });
 }
+
+/* ================================
+   EDIT MODAL HELPERS
+================================ */
 
 // Find the current Edit button for a task
 function findEditButton(taskId) {
@@ -183,7 +225,10 @@ function closeEditModal() {
     activeTaskId = null;
 }
 
-// Save changes from the edit form
+/* ================================
+   SAVE EDITED TASK
+================================ */
+
 editForm.addEventListener("submit", event => {
     event.preventDefault();
 
@@ -204,8 +249,10 @@ editForm.addEventListener("submit", event => {
         return;
     }
 
-    if (updatedDueDate &&
-        isNaN(new Date(updatedDueDate).getTime())) {
+    if (
+        updatedDueDate &&
+        isNaN(new Date(updatedDueDate).getTime())
+    ) {
         alert("Please enter a valid due date.");
         editDueDate.focus();
         return;
@@ -220,6 +267,10 @@ editForm.addEventListener("submit", event => {
     renderTasks();
     closeEditModal();
 });
+
+/* ================================
+   CLOSE EDIT MODAL
+================================ */
 
 // Cancel button
 cancelEdit.addEventListener("click", closeEditModal);
@@ -242,7 +293,10 @@ document.addEventListener("keydown", event => {
     }
 });
 
-// Keyboard focus trapping
+/* ================================
+   KEYBOARD FOCUS TRAPPING
+================================ */
+
 editModal.addEventListener("keydown", event => {
     if (event.key !== "Tab") {
         return;
@@ -259,10 +313,13 @@ editModal.addEventListener("keydown", event => {
         return;
     }
 
-    if (event.shiftKey &&
-        document.activeElement === first) {
+    if (
+        event.shiftKey &&
+        document.activeElement === first
+    ) {
         event.preventDefault();
         last.focus();
+
     } else if (
         !event.shiftKey &&
         document.activeElement === last
@@ -272,7 +329,10 @@ editModal.addEventListener("keydown", event => {
     }
 });
 
-// Task rendering
+/* ================================
+   RENDER TASKS
+================================ */
+
 function renderTasks() {
     taskList.innerHTML = "";
 
@@ -295,50 +355,74 @@ function renderTasks() {
 
     filteredTasks.forEach(task => {
         const li = document.createElement("li");
+
         li.className =
             `task ${task.completed ? "completed" : ""}`;
+
         li.draggable = true;
         li.dataset.id = task.id;
 
+        /* Drag handle */
+
         const handle = document.createElement("span");
+
         handle.className = "drag-handle";
         handle.textContent = "⠿";
         handle.title = "Drag to reorder";
 
+        /* Completion checkbox */
+
         const checkbox = document.createElement("input");
+
         checkbox.type = "checkbox";
         checkbox.checked = Boolean(task.completed);
-        checkbox.setAttribute("aria-label", "Complete task");
+
+        checkbox.setAttribute(
+            "aria-label",
+            "Complete task"
+        );
 
         checkbox.addEventListener("change", () => {
             task.completed = checkbox.checked;
+
             saveTasks();
             renderTasks();
         });
 
+        /* Task information */
+
         const info = document.createElement("div");
+
         info.className = "task-info";
 
         const name = document.createElement("div");
+
         name.className = "task-name";
         name.textContent = task.text;
 
         const priority = document.createElement("span");
+
         priority.className =
             `priority ${task.priority || "Medium"}`;
+
         priority.textContent =
             `${task.priority || "Medium"} Priority`;
 
         info.append(name, priority);
 
+        /* Due date */
+
         if (task.dueDate) {
             const due = document.createElement("small");
+
             const date = new Date(task.dueDate);
 
             due.textContent = "Due: " + date.toLocaleString();
 
-            if (!task.completed &&
-                date.getTime() < Date.now()) {
+            if (
+                !task.completed &&
+                date.getTime() < Date.now()
+            ) {
                 due.classList.add("overdue");
                 due.textContent += " (Overdue)";
             }
@@ -346,15 +430,21 @@ function renderTasks() {
             info.appendChild(due);
         }
 
+        /* Task action buttons */
+
         const actions = document.createElement("div");
+
         actions.className = "task-actions";
 
         // Edit button
         const edit = document.createElement("button");
+
         edit.className = "edit-btn";
         edit.textContent = "Edit";
         edit.type = "button";
+
         edit.dataset.taskId = String(task.id);
+
         edit.setAttribute(
             "aria-label",
             `Edit task: ${task.text}`
@@ -368,14 +458,17 @@ function renderTasks() {
             editDueDate.value = task.dueDate || "";
 
             editModal.classList.remove("hidden");
+
             editTitle.focus();
         });
 
         // Delete button
         const remove = document.createElement("button");
+
         remove.className = "delete-btn";
         remove.textContent = "Delete";
         remove.type = "button";
+
         remove.setAttribute(
             "aria-label",
             `Delete task: ${task.text}`
@@ -391,9 +484,13 @@ function renderTasks() {
         });
 
         actions.append(edit, remove);
+
         li.append(handle, checkbox, info, actions);
 
-        // Drag and drop
+        /* ================================
+           DRAG AND DROP
+        ================================ */
+
         li.addEventListener("dragstart", () => {
             draggedId = task.id;
             li.classList.add("dragging");
@@ -411,8 +508,10 @@ function renderTasks() {
         li.addEventListener("drop", event => {
             event.preventDefault();
 
-            if (draggedId === null ||
-                draggedId === task.id) {
+            if (
+                draggedId === null ||
+                draggedId === task.id
+            ) {
                 return;
             }
 
@@ -429,6 +528,7 @@ function renderTasks() {
             }
 
             const [moved] = tasks.splice(from, 1);
+
             tasks.splice(to, 0, moved);
 
             saveTasks();
@@ -442,7 +542,10 @@ function renderTasks() {
     scheduleReminders();
 }
 
-// Add tasks
+/* ================================
+   ADD NEW TASK
+================================ */
+
 taskForm.addEventListener("submit", event => {
     event.preventDefault();
 
@@ -454,8 +557,10 @@ taskForm.addEventListener("submit", event => {
 
     const dueDate = dueDateInput.value;
 
-    if (dueDate &&
-        isNaN(new Date(dueDate).getTime())) {
+    if (
+        dueDate &&
+        isNaN(new Date(dueDate).getTime())
+    ) {
         alert("Please enter a valid deadline.");
         return;
     }
@@ -476,7 +581,10 @@ taskForm.addEventListener("submit", event => {
     taskInput.focus();
 });
 
-// Filters
+/* ================================
+   TASK FILTERS
+================================ */
+
 document.querySelectorAll(".filter").forEach(button => {
     button.addEventListener("click", () => {
         currentFilter = button.dataset.filter;
@@ -484,20 +592,30 @@ document.querySelectorAll(".filter").forEach(button => {
         document.querySelectorAll(".filter").forEach(
             filterButton => {
                 filterButton.classList.remove("active");
+                filterButton.setAttribute("aria-pressed", "false");
             }
         );
 
         button.classList.add("active");
+        button.setAttribute("aria-pressed", "true");
+
         renderTasks();
     });
 });
 
-// Refresh reminder schedule when page becomes active
+/* ================================
+   REFRESH REMINDERS WHEN PAGE
+   BECOMES ACTIVE
+================================ */
+
 document.addEventListener("visibilitychange", () => {
     if (!document.hidden) {
         scheduleReminders();
     }
 });
 
-// Initial load
+/* ================================
+   INITIAL LOAD
+================================ */
+
 renderTasks();

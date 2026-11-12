@@ -1,4 +1,8 @@
 
+/* ================================
+   GLOBAL STYLES
+================================ */
+
 * {
     margin: 0;
     padding: 0;
@@ -40,8 +44,12 @@ body {
     padding: 30px;
     background: var(--card);
     border-radius: 18px;
-    box-shadow: 0 10px 35px rgba(0,0,0,0.07);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.07);
 }
+
+/* ================================
+   HEADER
+================================ */
 
 header {
     display: flex;
@@ -61,6 +69,10 @@ header p {
     color: var(--muted);
 }
 
+/* ================================
+   BUTTONS AND INPUTS
+================================ */
+
 button {
     cursor: pointer;
     border: none;
@@ -75,7 +87,15 @@ button:hover {
     opacity: 0.85;
 }
 
-input, select {
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+}
+
+input,
+select {
     padding: 13px;
     border: 1px solid var(--border);
     border-radius: 8px;
@@ -85,9 +105,14 @@ input, select {
     min-width: 0;
 }
 
-input:focus, select:focus {
+input:focus,
+select:focus {
     border-color: var(--primary);
 }
+
+/* ================================
+   TASK STATISTICS
+================================ */
 
 .stats {
     display: grid;
@@ -114,6 +139,10 @@ input:focus, select:focus {
     font-size: 13px;
 }
 
+/* ================================
+   ADD TASK FORM
+================================ */
+
 #taskForm {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -124,6 +153,10 @@ input:focus, select:focus {
 #taskForm button {
     grid-column: 1 / -1;
 }
+
+/* ================================
+   TOOLBAR AND FILTERS
+================================ */
 
 .toolbar {
     display: flex;
@@ -153,6 +186,10 @@ input:focus, select:focus {
 .reminder-btn {
     background: #198754;
 }
+
+/* ================================
+   TASK LIST
+================================ */
 
 #taskList {
     list-style: none;
@@ -203,6 +240,10 @@ input:focus, select:focus {
     color: var(--muted);
 }
 
+/* ================================
+   PRIORITY LABELS
+================================ */
+
 .priority {
     display: inline-block;
     padding: 4px 8px;
@@ -226,6 +267,10 @@ input:focus, select:focus {
     color: #16834a;
 }
 
+/* ================================
+   TASK ACTION BUTTONS
+================================ */
+
 .task-actions {
     display: flex;
     gap: 6px;
@@ -244,6 +289,10 @@ input:focus, select:focus {
     background: #e74c3c;
 }
 
+/* ================================
+   EMPTY AND OVERDUE STATES
+================================ */
+
 .empty {
     text-align: center;
     color: var(--muted);
@@ -255,49 +304,10 @@ input:focus, select:focus {
     font-weight: bold;
 }
 
-footer {
-    text-align: center;
-    margin-top: 30px;
-    color: var(--muted);
-    font-size: 13px;
-}
+/* ================================
+   EDIT TASK MODAL
+================================ */
 
-@media (max-width: 600px) {
-    .container {
-        padding: 20px 15px;
-    }
-
-    header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    header h1 {
-        font-size: 26px;
-    }
-
-    #taskForm {
-        grid-template-columns: 1fr;
-    }
-
-    #taskForm button {
-        grid-column: auto;
-    }
-
-    .task {
-        flex-wrap: wrap;
-    }
-
-    .task-actions {
-        margin-left: auto;
-    }
-
-    .toolbar {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-}
-/* Edit Task Modal */
 .modal {
     position: fixed;
     inset: 0;
@@ -314,7 +324,7 @@ footer {
 }
 
 .modal-content {
-    background: var(--card-bg);
+    background: var(--card);
     color: var(--text);
     width: 100%;
     max-width: 400px;
@@ -356,4 +366,59 @@ footer {
     border: none;
     border-radius: 6px;
     cursor: pointer;
+}
+
+#cancelEdit {
+    background: #777;
+}
+
+/* ================================
+   FOOTER
+================================ */
+
+footer {
+    text-align: center;
+    margin-top: 30px;
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* ================================
+   MOBILE RESPONSIVENESS
+================================ */
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px 15px;
+    }
+
+    header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    header h1 {
+        font-size: 26px;
+    }
+
+    #taskForm {
+        grid-template-columns: 1fr;
+    }
+
+    #taskForm button {
+        grid-column: auto;
+    }
+
+    .task {
+        flex-wrap: wrap;
+    }
+
+    .task-actions {
+        margin-left: auto;
+    }
+
+    .toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+    }
 }

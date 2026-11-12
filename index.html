@@ -4,115 +4,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Smart To-Do List 2.0 — organize tasks, set priorities, track deadlines, and stay productive.">
     <title>Smart To-Do List 2.0</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <header>
-        <div>
-            <h1>My Tasks ✨</h1>
-            <p>Make today productive.</p>
-        </div>
+        <header>
+            <div>
+                <h1>My Tasks ✨</h1>
+                <p>Make today productive.</p>
+            </div>
 
-        <button id="themeToggle" type="button">🌙 Dark Mode</button>
-    </header>
+            <button id="themeToggle" type="button">
+                🌙 Dark Mode
+            </button>
+        </header>
 
-    <section class="stats">
-        <div class="stat-card">
-            <h2 id="totalTasks">0</h2>
-            <p>Total Tasks</p>
-        </div>
+        <section class="stats" aria-label="Task statistics">
+            <div class="stat-card">
+                <h2 id="totalTasks">0</h2>
+                <p>Total Tasks</p>
+            </div>
 
-        <div class="stat-card">
-            <h2 id="completedTasks">0</h2>
-            <p>Completed</p>
-        </div>
+            <div class="stat-card">
+                <h2 id="completedTasks">0</h2>
+                <p>Completed</p>
+            </div>
 
-        <div class="stat-card">
-            <h2 id="pendingTasks">0</h2>
-            <p>Pending</p>
-        </div>
-    </section>
+            <div class="stat-card">
+                <h2 id="pendingTasks">0</h2>
+                <p>Pending</p>
+            </div>
+        </section>
 
-    <form id="taskForm">
+        <form id="taskForm">
+            <input
+                type="text"
+                id="taskInput"
+                placeholder="What do you need to do?"
+                aria-label="New task"
+                required
+            >
 
-        <input
-            type="text"
-            id="taskInput"
-            placeholder="What do you need to do?"
-            required
-        >
-
-        <select id="priority">
-            <option value="Low">Low Priority</option>
-            <option value="Medium" selected>Medium Priority</option>
-            <option value="High">High Priority</option>
-        </select>
-
-        <input
-            type="datetime-local"
-            id="dueDate"
-            aria-label="Task deadline"
-        >
-
-        <button type="submit">+ Add Task</button>
-
-    </form>
-    <div
-    id="editModal"
-    class="modal hidden"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="editModalTitle"
->
-    <div class="modal-content">
-        <h2 id="editModalTitle">Edit Task</h2>
-
-        <form id="editForm">
-            <label for="editTitle">Task</label>
-            <input type="text" id="editTitle" required>
-
-            <label for="editPriority">Priority</label>
-            <select id="editPriority">
-                <option value="Low">Low</option>
-                <option value="Medium">Medium</option>
-                <option value="High">High</option>
+            <select id="priority" aria-label="Task priority">
+                <option value="Low">Low Priority</option>
+                <option value="Medium" selected>Medium Priority</option>
+                <option value="High">High Priority</option>
             </select>
 
-            <label for="editDueDate">Due Date</label>
-            <input type="datetime-local" id="editDueDate">
+            <input
+                type="datetime-local"
+                id="dueDate"
+                aria-label="Task deadline"
+            >
 
-            <div class="modal-actions">
-                <button type="submit">Save Changes</button>
-                <button type="button" id="cancelEdit">Cancel</button>
-            </div>
+            <button type="submit">+ Add Task</button>
         </form>
+
+        <!-- Accessible Edit Task Modal -->
+        <div
+            id="editModal"
+            class="modal hidden"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="editModalTitle"
+        >
+            <div class="modal-content">
+                <h2 id="editModalTitle">Edit Task</h2>
+
+                <form id="editForm">
+                    <label for="editTitle">Task</label>
+                    <input
+                        type="text"
+                        id="editTitle"
+                        required
+                    >
+
+                    <label for="editPriority">Priority</label>
+                    <select id="editPriority">
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                    </select>
+
+                    <label for="editDueDate">Due Date</label>
+                    <input
+                        type="datetime-local"
+                        id="editDueDate"
+                    >
+
+                    <div class="modal-actions">
+                        <button type="submit">Save Changes</button>
+                        <button type="button" id="cancelEdit">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="toolbar">
+            <nav class="filters" aria-label="Filter tasks">
+                <button
+                    type="button"
+                    class="filter active"
+                    data-filter="all"
+                    aria-pressed="true"
+                >
+                    All
+                </button>
+
+                <button
+                    type="button"
+                    class="filter"
+                    data-filter="pending"
+                    aria-pressed="false"
+                >
+                    Pending
+                </button>
+
+                <button
+                    type="button"
+                    class="filter"
+                    data-filter="completed"
+                    aria-pressed="false"
+                >
+                    Completed
+                </button>
+            </nav>
+
+            <button
+                id="reminderToggle"
+                class="reminder-btn"
+                type="button"
+            >
+                🔔 Enable Reminders
+            </button>
+        </div>
+
+        <ul id="taskList" aria-live="polite"></ul>
+
+        <footer>
+            <p>Smart To-Do List 2.0 | Built with ❤️</p>
+        </footer>
+
     </div>
-</div>
 
-    <div class="toolbar">
-        <nav class="filters">
-            <button class="filter active" data-filter="all">All</button>
-            <button class="filter" data-filter="pending">Pending</button>
-            <button class="filter" data-filter="completed">Completed</button>
-        </nav>
-
-        <button id="reminderToggle" class="reminder-btn" type="button">
-            🔔 Enable Reminders
-        </button>
-    </div>
-
-    <ul id="taskList"></ul>
-
-    <footer>
-        <p>Smart To-Do List 2.0 | Built with ❤️</p>
-    </footer>
-
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
